@@ -7,7 +7,7 @@ const createUser = asyncHandler(async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    throw new Error("Please fill all fields");
+    return res.status(400).send({ message: "Please provide all fields" });
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -15,7 +15,7 @@ const createUser = asyncHandler(async (req, res) => {
 
   const userExists = await User.findOne({ email });
   if (userExists) {
-    res.status(400).send({ message: "User already exists" });
+    return res.status(400).send({ message: "User already exists" });
   }
 
   const newUser = new User({ username, email, password: hashedPassword });
@@ -30,7 +30,7 @@ const createUser = asyncHandler(async (req, res) => {
       isAdmin: newUser.isAdmin,
     });
   } catch {
-    res.status(400).send({ message: "Invalid user data" });
+    return res.status(400).send({ message: "Invalid user data" });
   }
 });
 
@@ -39,6 +39,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
   console.log(email);
   console.log(password);
+
+  if (!email || !password) {
+    return res.status(400).send({ message: "Please provide all fields" });
+  }
 
   const existingUser = await User.findOne({ email });
 
@@ -59,8 +63,10 @@ const loginUser = asyncHandler(async (req, res) => {
       });
       return;
     } else {
-      res.status(401).send({ message: "Invalid email or password" });
+      return res.status(401).send({ message: "Invalid email or password" });
     }
+  } else {
+    return res.status(401).send({ message: "Invalid email or password" });
   }
 });
 
