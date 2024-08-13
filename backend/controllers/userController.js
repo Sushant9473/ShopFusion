@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
-import bycrypt from "bcryptjs";
+import bcrypt from "bcryptjs";
 import createToken from "../utils/createToken.js";
 
 const createUser = asyncHandler(async (req, res) => {
@@ -10,8 +10,8 @@ const createUser = asyncHandler(async (req, res) => {
     throw new Error("Please fill all fields");
   }
 
-  const salt = await bycrypt.genSalt(10);
-  const hashedPassword = await bycrypt.hash(password, salt);
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -34,4 +34,32 @@ const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { createUser };
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  console.log(email);
+  console.log(password);
+
+  const existingUser = await User.findOne({ email });
+
+  if (existingUser) {
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+
+    if (isPasswordValid) {
+      createToken(res, existingUser._id);
+
+      res.status(201).json({
+        _id: existingUser._id,
+        username: existingUser.username,
+        email: existingUser.email,
+        isAdmin: existingUser.isAdmin,
+      });
+      return;
+    }
+  }
+});
+
+export { createUser, loginUser };
