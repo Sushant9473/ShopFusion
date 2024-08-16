@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import "./Navigation.css";
 import { FaHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
+import FavoritesCount from "../Products/FavoritesCount";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -103,6 +104,7 @@ const Navigation = () => {
                   <FaHeart className=" mr-2" size={20} />
                   <span className="hidden nav-item-name ">Favorites</span>{" "}
                 </div>
+                {/* <FavoritesCount /> */}
               </Link>
             </div>
           </div>
@@ -149,6 +151,7 @@ const Navigation = () => {
               <span className="hidden nav-item-name mt-[3rem]">
                 Favorites
               </span>{" "}
+              <FavoritesCount />
             </div>
           </Link>
         </div>
