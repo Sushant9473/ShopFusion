@@ -5,9 +5,15 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
-      "/api/": "http://localhost:3030",
-      "/uploads/": "http://localhost:3030",
+    "/api/": {
+      target: "https://shopfusion-wjtz.onrender.com",
+      changeOrigin: true,
+      secure: false,
+    },
+    "/uploads/": {
+      target: "https://shopfusion-wjtz.onrender.com",
+      changeOrigin: true,
+      secure: false,
     },
   },
 });
