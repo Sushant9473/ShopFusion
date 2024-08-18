@@ -5,14 +5,12 @@ import Product from "./backend/models/productModel.js";
 import Category from "./backend/models/categoryModel.js";
 import User from "./backend/models/userModel.js";
 import bcrypt from "bcryptjs";
+import connectDB from "./backend/config/db.js";
 
 dotenv.config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+connectDB();
 
 // Fetch categories from Fake Store API
 const fetchCategories = async () => {
