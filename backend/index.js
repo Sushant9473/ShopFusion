@@ -18,7 +18,7 @@ const port = process.env.PORT || 3030;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://mern-dusky-zeta.vercel.app",
+  "https://shop-fusion-chi.vercel.app/",
 ];
 
 // Updated CORS configuration
